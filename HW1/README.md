@@ -44,5 +44,49 @@ These two command are also recommended to be execute manually and separately bec
 
 ### Step 4: Provision software to VM
 
+Install sysbench on guest OS
+
+```bash
+sudo apt install sysbench -y
+```
+
+### Step 5: Copy test script into VM
+
+First, Generate an ssh key pair for ssh connection to VM.
+
+```bash
+ssh-keygen -f ~/.ssh/qemu
+```
+
+For each VM instance, first launch VM with port forwarding. Then copy ssh public key to guest OS. Finally, copy sysbench_script into guest OS.
+
+```bash
+# Start VM with port forwarding
+./start_raw_with_port_forwarding.sh
+
+# Copy ssh public key into VM
+ssh-copy-id -i ~/.ssh/qemu.pub  -p 8888 qizhe@localhost
+
+# Copy test script into VM 
+scp -p 8888 sysbench_script.sh qizhe@localhost:~/sysbench_script.sh
+```
+
+```bash
+# Start VM with port forwarding
+./start_qcow2_with_port_forwarding.sh
+
+# Copy ssh public key into VM
+ssh-copy-id -i ~/.ssh/qemu.pub  -p 8888 qizhe@localhost
+
+# Copy test script into VM 
+scp -p 8888 sysbench_script.sh qizhe@localhost:~/sysbench_script.sh
+```
 
 
+### Step 5: Run tests
+
+```bash
+./tests
+```
+
+The 
